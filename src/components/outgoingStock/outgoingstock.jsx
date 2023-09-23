@@ -1,6 +1,9 @@
 import Menu from "../headers/menu"
 import Footer from "../footer/footer"
-export default function Home() {
+
+export default function Outgoingstock(props) {
+
+    const { api } = props;
 
     return (
         <>
@@ -8,4 +11,5 @@ export default function Home() {
             <Footer />
         </>
     )
+
 }

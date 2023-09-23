@@ -4,11 +4,12 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Alert, Button, Card, Col, Container, Form, Image, Row, Spinner, Stack } from 'react-bootstrap';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm(props) {
 
     const { api } = props;
+    const navigate = useNavigate();
 
     const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
@@ -50,7 +51,7 @@ export default function LoginForm(props) {
                     // console.log(response.data.token);
                     localStorage.setItem('token', response.data.token);
                     localStorage.setItem('resulte', JSON.stringify(response.data.resulte));
-                    window.location = "/home"
+                    navigate("/home")
                 }
 
             }).catch((error) => {
