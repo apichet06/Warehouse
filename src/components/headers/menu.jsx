@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { Container, Image, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Menu() {
+export default function Menu(props) {
     const resulteData = JSON.parse(localStorage.getItem('resulte'));
     // console.log(resulteData.imageFile);
-    const api = "http://192.168.37.134:8081/WHAPI/api/ImagesPathAPI/";
+    const { api } = props;
     const navigate = useNavigate();
     const logout = () => {
 
@@ -40,7 +41,7 @@ export default function Menu() {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <NavDropdown title={<Image src={api + resulteData.imageFile} width={25} height={25} roundedCircle />} id="collapsible-nav-dropdown">
+                            <NavDropdown title={<Image src={api + "/ImagesPathAPI/" + resulteData.imageFile} width={25} height={25} roundedCircle />} id="collapsible-nav-dropdown">
                                 <NavDropdown.Item as={Link} to="/profile">ข้อมูลส่วนตัว</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={logout}>ออกจากระบบ</NavDropdown.Item>

@@ -14,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 
 function App() {
-  const api = "http://192.168.37.134:8081/WHAPI/api";
+  const api = "http://localhost:8081/WHAPI/api";
   return (
     <Router>
       <Routes>

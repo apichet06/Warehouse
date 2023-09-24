@@ -7,8 +7,8 @@ export default function Division(props) {
     const { api } = props;
     return (
         <>
-            <Menu />
-            <DivisionForm />
+            <Menu api={api} />
+            <DivisionForm api={api} />
             <Footer />
         </>
     )

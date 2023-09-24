@@ -1,35 +1,64 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import DataTable from 'react-data-table-component';
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import axios from 'axios';
 
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import DataTable from "react-data-table-component";
+import DivisionModal from "./divisionmodal";
+import { BsPencilFill, BsFillTrash3Fill } from "react-icons/bs";
 export default function DivisionForm(props) {
-   const { api } = props;
+   const { api, } = props;
+   const [data, setData] = useState([]);
+
+   const [show, setShow] = useState(false);
+   const [editBt, setEditBt] = useState(false);
+
+
+
+   const handleClose = () => setShow(false);
+   const handleShow = () => setShow(true);
 
    const columns = [
-      { name: '#', selector: 'id' },
-      { name: 'รหัสแผนก', selector: 'title' },
-      { name: 'ชื่อแผนก', selector: 'year' },
+      { name: '#', selector: (row) => row.id }, // Use a selector function
+      { name: 'รหัสแผนก', selector: (row) => row.dV_ID },
+      { name: 'ชื่อแผนก', selector: (row) => row.dV_Name },
+      {
+         name: 'จัดการ',
+         cell: (row) => (
+            <>
+               <a onClick={() => {
+                  handleEdit(row.id);
+               }}><BsPencilFill /></a> &nbsp; &nbsp;
+               <a onClick={() => handleDelete(row.id)}><BsFillTrash3Fill /></a>
+            </>
+         ),
+      },
    ];
 
-   const data = [
-      { id: 1, title: 'Beetlejuice', year: '1988' },
-      { id: 2, title: 'Ghostbusters', year: '1984' },
-   ];
+   const handleEdit = (id) => {
 
-   const handleData = async (data) => {
+      setEditBt(true); // Set editBt to true
+      setShow(true);    // Show the modal
+      console.log('Edit clicked for row:', id);
+   };
+
+   const handleDelete = (id) => {
+      console.log('Delete clicked for row:', id);
+   };
+
+   const fetchData = useCallback(async () => {
       try {
-         await axios.get(api + '/DivisionAPI');
+         const response = await axios.get(`${api}/DivisionAPI`);
+         setData(response.data.result);
       } catch (err) {
          console.log(err.message);
       }
-   }
+   }, [api])
 
-
-
-
-
+   useEffect(() => {
+      fetchData();
+   }, [fetchData]);
 
    return (
       <>
@@ -37,7 +66,8 @@ export default function DivisionForm(props) {
             <Row className="justify-content-center">
 
                <Col md={7} className="text-end mb-2">
-                  <Button variant="primary">เพิ่ม</Button>
+                  <Button variant="primary" onClick={() => { handleShow(); setEditBt(false) }} >เพิ่ม</Button>
+                  <hr />
                </Col>
                <Col md={7}>
                   <Card className="shadow">
@@ -53,7 +83,7 @@ export default function DivisionForm(props) {
                </Col>
             </Row>
          </Container>
-
+         <DivisionModal show={show} handleClose={handleClose} editBt={editBt} />
       </>
    )
 }
